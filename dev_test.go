@@ -10,9 +10,9 @@ import (
 
 func TestInsertKemahasiswaan(t *testing.T) {
 	identitas := model.Mahasiswa{
-		Npm:             "1214054",
-		Nama:            "Dimas Ardianto",
-		Nomor_Handphone: "6289647129890",
+		Npm:             "1214031",
+		Nama:            "Erdito",
+		Nomor_Handphone: "6289875478390",
 		Prodi: model.ProgramStudi{
 			Kode_Prodi: "012021",
 			Nama_Prodi: "D4",
@@ -25,8 +25,8 @@ func TestInsertKemahasiswaan(t *testing.T) {
 	}
 	nilai_mhs := model.Nilai{
 		Matakuliah: model.Matakuliah{
-			Nama_Matkul: "Pemrograman",
-			Nama_Dosen:  "Indra Riksa",
+			Nama_Matkul: "Literasi Manusia",
+			Nama_Dosen:  "Bu Novi",
 		},
 		Nilai_Angka: 90,
 		Nilai_Huruf: "A",
@@ -36,9 +36,9 @@ func TestInsertKemahasiswaan(t *testing.T) {
 }
 
 func TestInsertDataMahasiswa(t *testing.T) {
-	Npm := "1214054"
-	Nama := "Dimas Ardianto"
-	Nomor_Handphone := "6289647129890"
+	Npm := "1214031"
+	Nama := "Erdito"
+	Nomor_Handphone := "6289875478390"
 	Prodi := model.ProgramStudi{
 		Kode_Prodi: "012021",
 		Nama_Prodi: "D4",
@@ -51,9 +51,9 @@ func TestInsertDataMahasiswa(t *testing.T) {
 
 func TestInsertKeuanganMahasiswa(t *testing.T) {
 	Biodata := model.Mahasiswa{
-		Npm:             "1214054",
-		Nama:            "Dimas Ardianto",
-		Nomor_Handphone: "6289647129890",
+		Npm:             "1214031",
+		Nama:            "Erdito",
+		Nomor_Handphone: "6289875478390",
 		Prodi: model.ProgramStudi{
 			Kode_Prodi: "012021",
 			Nama_Prodi: "D4",
@@ -68,9 +68,9 @@ func TestInsertKeuanganMahasiswa(t *testing.T) {
 
 func TestInsertNilaiMahasiswa(t *testing.T) {
 	Biodata_Mahasiswa := model.Mahasiswa{
-		Npm:             "1214054",
-		Nama:            "Dimas Ardianto",
-		Nomor_Handphone: "6289647129890",
+		Npm:             "1214031",
+		Nama:            "Erdito",
+		Nomor_Handphone: "6289875478390",
 		Prodi: model.ProgramStudi{
 			Kode_Prodi: "012021",
 			Nama_Prodi: "D4",
@@ -79,8 +79,8 @@ func TestInsertNilaiMahasiswa(t *testing.T) {
 		Kelas:   "2B",
 	}
 	Matakuliah := model.Matakuliah{
-		Nama_Matkul: "Pemrograman",
-		Nama_Dosen:  "Indra Riksa",
+		Nama_Matkul: "Literasi Manusia",
+		Nama_Dosen:  "Bu Novi",
 	}
 	Nilai_Angka := 90
 	Nilai_Huruf := "A"
@@ -112,4 +112,23 @@ func TestGetNilaiMahasiswaFromNama(t *testing.T) {
 	Nama := "Dimas Ardianto"
 	nilai := module.GetNilaiMahasiswaFromNama(Nama, module.MongoConn, "nilai_mahasiswa")
 	fmt.Println(nilai)
+}
+
+//test getFunctionAll
+
+func TestGetAllKemahasiswaan(t *testing.T) {
+	data := module.GetAllKemahasiswaan(module.MongoConn, "kemahasiswaan")
+	fmt.Println(data)
+}
+func TestGetAllDataMahasiswa(t *testing.T) {
+	data := module.GetAllDataMahasiswa(module.MongoConn, "data_mahasiswa")
+	fmt.Println(data)
+}
+func TestGetAllKeuanganMahasiswa(t *testing.T) {
+	data := module.GetAllKeuanganMahasiswa(module.MongoConn, "keuangan_mahasiswa")
+	fmt.Println(data)
+}
+func TestGetAllNilaiMahasiswa(t *testing.T) {
+	data := module.GetAllNilaiMahasiswa(module.MongoConn, "nilai_mahasiswa")
+	fmt.Println(data)
 }

@@ -104,3 +104,58 @@ func GetNilaiMahasiswaFromNama(nama string, db *mongo.Database, col string) (dat
 	}
 	return data
 }
+
+//GetFunctionAll
+
+func GetAllKemahasiswaan(db *mongo.Database, col string) (kemahasiswaan []model.Kemahasiswaan) {
+	data_kemahasiswaan := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := data_kemahasiswaan.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &kemahasiswaan)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return kemahasiswaan
+}
+func GetAllDataMahasiswa(db *mongo.Database, col string) (mahasiswa []model.Mahasiswa) {
+	data_mahasiswa := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := data_mahasiswa.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &mahasiswa)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return mahasiswa
+}
+func GetAllKeuanganMahasiswa(db *mongo.Database, col string) (keuangan []model.Keuangan) {
+	keuangan_mahasiswa := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := keuangan_mahasiswa.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &keuangan)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return keuangan
+}
+func GetAllNilaiMahasiswa(db *mongo.Database, col string) (nilai []model.Nilai) {
+	nilai_mahasiswa := db.Collection(col)
+	filter := bson.M{}
+	cursor, err := nilai_mahasiswa.Find(context.TODO(), filter)
+	if err != nil {
+		fmt.Println("GetALLData :", err)
+	}
+	err = cursor.All(context.TODO(), &nilai)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return nilai
+}
