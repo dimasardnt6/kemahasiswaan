@@ -2,12 +2,14 @@ package module
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 
 	"github.com/aiteung/atdb"
 	"github.com/dimasardnt6/kemahasiswaan/model"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -105,6 +107,19 @@ func GetNilaiMahasiswaFromNama(nama string, db *mongo.Database, col string) (dat
 	return data
 }
 
+func GetDataKemahasiswaanFromID(_id primitive.ObjectID, db *mongo.Database, col string) (kemahasiswaan model.Kemahasiswaan, errs error) {
+	Kemahasiswaan := db.Collection(col)
+	filter := bson.M{"_id": _id}
+	err := Kemahasiswaan.FindOne(context.TODO(), filter).Decode(&kemahasiswaan)
+	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return kemahasiswaan, fmt.Errorf("no data found for ID %s", _id)
+		}
+		return kemahasiswaan, fmt.Errorf("error retrieving data for ID %s: %s", _id, err.Error())
+	}
+	return kemahasiswaan, nil
+}
+
 //GetFunctionAll
 
 func GetAllKemahasiswaan(db *mongo.Database, col string) (kemahasiswaan []model.Kemahasiswaan) {
@@ -158,4 +173,45 @@ func GetAllNilaiMahasiswa(db *mongo.Database, col string) (nilai []model.Nilai) 
 		fmt.Println(err)
 	}
 	return nilai
+}
+
+// Update Function
+
+func UpdateKemahasiswaan(db *mongo.Database, col string, id primitive.ObjectID, identitas model.Mahasiswa, status_keuangan model.Keuangan, nilai_mhs model.Nilai) (err error) {
+	filter := bson.M{"_id": id}
+	update := bson.M{
+		"$set": bson.M{
+			"identitas":       identitas,
+			"status_keuangan": status_keuangan,
+			"nilai_mhs":       nilai_mhs,
+		},
+	}
+	result, err := db.Collection(col).UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		fmt.Printf("UpdateKemahasiswaan: %v\n", err)
+		return
+	}
+	if result.ModifiedCount == 0 {
+		err = errors.New("No data has been changed with the specified ID")
+		return
+	}
+	return nil
+}
+
+// Delete Function
+
+func DeleteKemahasiwaanByID(_id primitive.ObjectID, db *mongo.Database, col string) error {
+	Kemahasiswaan := db.Collection(col)
+	filter := bson.M{"_id": _id}
+
+	result, err := Kemahasiswaan.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return fmt.Errorf("error deleting data for ID %s: %s", _id, err.Error())
+	}
+
+	if result.DeletedCount == 0 {
+		return fmt.Errorf("data with ID %s not found", _id)
+	}
+
+	return nil
 }
