@@ -65,6 +65,21 @@ func InsertNilaiMahasiswa(db *mongo.Database, col string, bio_mhs model.Mahasisw
 	return InsertOneDoc(db, col, nilai)
 }
 
+func InsertDataKemahasiswaan(db *mongo.Database, col string, identitas model.Mahasiswa, status_keuangan model.Keuangan, nilai_mhs model.Nilai) (insertedID primitive.ObjectID, err error) {
+	kemahasiswaan := bson.M{
+		"identitas":       identitas,
+		"status_keuangan": status_keuangan,
+		"nilai_mhs":       nilai_mhs,
+	}
+	result, err := db.Collection(col).InsertOne(context.Background(), kemahasiswaan)
+	if err != nil {
+		fmt.Printf("InsertDataKemahasiswaan: %v\n", err)
+		return
+	}
+	insertedID = result.InsertedID.(primitive.ObjectID)
+	return insertedID, nil
+}
+
 // test getFunction
 
 func GetKemahasiswaanFromNpm(npm string, db *mongo.Database, col string) (data model.Kemahasiswaan) {
